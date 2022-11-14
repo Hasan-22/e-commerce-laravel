@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\FrontEndController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Frontend\WebController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -16,14 +18,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// front end website routes
+Route::get('/', [WebController::class, 'index']);
+Route::get('/AllCategories', [WebController::class, 'showCategories'])->name('web.categories');
 
+// auth routes
 Auth::routes();
 
+// user route
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// admin dashboard
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     // login as admin and show the dashboard
     Route::get('/dashboard', 'Admin\FrontEndController@index');
